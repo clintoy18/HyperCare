@@ -1,0 +1,15 @@
+{
+  "name": "hypertension-companion",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix apps/api\" \"npm run dev --prefix apps/web\"",
+    "build": "npm run build --prefix apps/api && npm run build --prefix apps/web",
+    "lint": "npm run lint --prefix apps/web",
+    "prisma:generate": "npm run prisma:generate --prefix apps/api",
+    "prisma:migrate": "npm run prisma:migrate --prefix apps/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
+}

@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String                 @id @default(cuid())
+  email        String                 @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime               @default(now())
+  readings     BloodPressureReading[]
+  medications  Medication[]
+}
+
+model BloodPressureReading {
+  id        String   @id @default(cuid())
+  userId    String
+  systolic  Int
+  diastolic Int
+  pulse     Int?
+  takenAt   DateTime
+  posture   String?
+  arm       String?
+  cuffType  String?
+  context   String?
+  symptoms  String[]
+  category  String
+  riskLevel String
+  advice    Json
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, takenAt])
+}
+
+model Medication {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  dose      String?
+  schedule  String?
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
